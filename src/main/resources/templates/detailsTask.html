@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layout/main.html">
+
+<div class="container" layout:fragment="content">
+    <div class="row">
+        <form method="post" th:action="@{/updateTask}">
+            <div class="col">
+                <div class="mb-3">
+                    <input type="hidden" class="form-control" name="folder_id" th:value="${detailsFolder.id}">
+                </div>
+                <div class="mb-3">
+                    <input type="hidden" class="form-control" name="task_id" th:value="${task.id}">
+                </div>
+                <div class="mb-3">
+                    <label>TITLE:</label>
+                    <input type="text" class="form-control" name="title" th:value="${task.title}">
+                </div>
+                <div class="mb-3">
+                    <label>DESCRIPTION:</label>
+                    <textarea class="form-control" name="description" th:text="${task.description}"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label>STATUS:</label>
+                    <select class="form-control" name="status">
+                        <option value="0" th:selected="${task.status==0}">TO DO</option>
+                        <option value="1" th:selected="${task.status==1}">IN TEST</option>
+                        <option value="2" th:selected="${task.status==2}">DONE</option>
+                        <option value="3" th:selected="${task.status==3}">FAILED</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Update</button>
+            </div>
+        </form>
+        <form method="post" th:action="@{/deleteTask}">
+            <div class="mb-3">
+                <input type="hidden" class="form-control" name="folder_id" th:value="${detailsFolder.id}">
+            </div>
+            <div class="mb-3">
+                <input type="hidden" class="form-control" name="task_id" th:value="${task.id}">
+            </div>
+            <button type="submit" class="btn btn-primary">Remove</button>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <form method="post" th:action="@{/addComment}" class="mb-3">
+                <input type="hidden" name="task_id" th:value="${task.id}">
+                <input type="hidden" name="folder_id" th:value="${detailsFolder.id}">
+                <div class="input-group">
+                    <textarea class="form-control" name="comment" placeholder="Добавить комментарий"></textarea>
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                </div>
+            </form>
+
+            <div th:each="comment : ${comments}" class="card mb-2">
+                <div class="card-body">
+                    <p class="card-text" th:text="${comment.comment}"></p>
+<!--                    <small class="text-muted" th:text="${comment.createdAt}"></small>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>
